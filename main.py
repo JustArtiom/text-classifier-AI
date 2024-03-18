@@ -53,6 +53,12 @@ def initialize():
         help="Transfer JSON between a different process trough console"
     )
 
+    parser.add_argument(
+        "-throw",
+        action="store_true",
+        help="Throw in case we meet an error"
+    )
+
     return parser.parse_args()
 
 
@@ -147,6 +153,7 @@ def main():
     if args.std:
         print("MESSAGE::" +
               json.dumps({"event": "process_start", "data": "success"}), flush=True)
+
     try:
         model, model_prop = load_data(args.model, args.std)
 
@@ -159,6 +166,8 @@ def main():
         while True:
             print(clasify(model, model_prop, tokenizer, args), flush=True)
     except Exception as e:
+        if (args.throw):
+            raise e
         print("MESSAGE::" +
               json.dumps({"event": "error", "data": str(e)}), flush=True)
 
