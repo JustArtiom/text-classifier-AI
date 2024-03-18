@@ -18,6 +18,8 @@ You need a json file with the next format to train
 
 ### Training
 
+Example use: `python train.py -tf train/custom_data.json -e 100 -b 32`
+
 ```
 options:
   -h, --help           show this help message and exit
@@ -32,4 +34,15 @@ options:
   -s , --shuffle       shuffle the data while training
 ```
 
-Example use: `python train.py -tf train/custom_data.json -e 100 -b 32`
+### Using the model
+
+I have a demo model provided to use it you can run `python main.py --model models/0 --query "How can i reset my password?"`
+
+```
+options:
+  -h, --help     show this help message and exit
+  -m , --model   Specify the path to the training model. For example /models/0
+  -q , --query   Allow to insert a custom query
+  -std           Transfer JSON between a different process trough console
+  -throw         Throw in case we meet an error
+```
