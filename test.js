@@ -33,19 +33,13 @@ class textClassifier {
         return data;
     };
 
-    start = async () => {
+    start = async (model) => {
         if (this.pyprocess) {
             if (!this.pyprocess.killed) this.pyprocess.kill();
             this.pyprocess = null;
         }
 
-        this.pyprocess = spawn("python", [
-            "main.py",
-            "-m",
-            "./models/0",
-            "-std",
-            "true",
-        ]);
+        this.pyprocess = spawn("python", ["main.py", "-m", model, "-std"]);
 
         await new Promise((res, rej) => {
             setTimeout(() => {
@@ -58,8 +52,11 @@ class textClassifier {
             this.pyprocess.stdout.on("data", (message) => {
                 const data = this.messageToJSON(message);
                 if (!data) return;
+                if (data.event == "error")
+                    return rej(new Error("Python - " + data.data || ""));
+
                 if (data.event == "load_model") loaded_model = true;
-                if (data.event == "load_model_proprieties") loaded_prop = true;
+                if (data.event == "load_model_properties") loaded_prop = true;
 
                 if (loaded_model && loaded_prop) {
                     this.isReady = true;
@@ -72,7 +69,7 @@ class textClassifier {
 
 const clasifier = new textClassifier();
 clasifier
-    .start()
+    .start("models/0")
     .then(async () => {
         const data = await clasifier.clasify("I forgot my password...");
         console.log(data);

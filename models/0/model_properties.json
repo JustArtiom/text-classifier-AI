@@ -524,9 +524,18 @@
         "headers": 511,
         "whitelisting": 512
     },
-    "label_index": {
-        "check_node_status": 0,
-        "vps_not_launched_yet": 1,
-        "forgot_cedentials": 2
+    "labels": {
+        "vps_not_launched_yet": {
+            "index": 0,
+            "response": "There is no information about vps es because it hasnt been lauched"
+        },
+        "forgot_cedentials": {
+            "index": 1,
+            "response": "Please check out https://example.com/auth/forgot-password to regain access to your account"
+        },
+        "check_node_status": {
+            "index": 2,
+            "response": "Hello, we are so sory that you are so sorry that you are having problems interacting with the servers, however this could be due a downtime or maintenance. For more info check https://example.com/status"
+        }
     }
 }

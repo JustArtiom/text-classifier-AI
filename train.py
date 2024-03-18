@@ -1,4 +1,4 @@
-import tensorflow as ts
+import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, GlobalAveragePooling1D
 from keras.preprocessing.text import Tokenizer
@@ -189,12 +189,17 @@ def save_model(model, history, path):
     plt.close()
 
 
-def save_json_details(path, args, word_index, label_index):
-    with open(os.path.join(path, "model_proprieties.json"), 'w') as file:
+def save_json_details(path, args, word_index, label_index, training_data):
+    with open(os.path.join(path, "model_properties.json"), 'w') as file:
         file.write(json.dumps({
             "config": vars(args),
             "word_index": word_index,
-            "label_index": label_index
+            "labels": {
+                label: {
+                    "index": i,
+                    "response": training_data[label]["response"]
+                } for label, i in label_index.items()
+            }
         }, indent=4))
 
 
@@ -226,7 +231,8 @@ def main():
     )
 
     save_model(model, history, working_dir)
-    save_json_details(working_dir, args, word_index, label_index)
+    save_json_details(working_dir, args, word_index,
+                      label_index, training_data)
 
     return 0
 
