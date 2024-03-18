@@ -1,0 +1,11 @@
+{
+    "train_file": "./train/data.json",
+    "max_tokens": 100,
+    "embedding_dim": 16,
+    "oov_token": "<OOV>",
+
+    "batch_size": 32,
+    "epochs": 100,
+    "validation_split": 0.2,
+    "shuffle": true
+}
